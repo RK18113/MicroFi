@@ -1,13 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { Wallet } from 'lucide-react';
+import GeometricWeb from '../components/GeometricWeb';
 
-const AuthSign1 = () => {
+
+const AuthSign = () => {
   const [isConnecting, setIsConnecting] = useState(false);
   const [walletAddress, setWalletAddress] = useState('');
 
-  // Clear walletAddress on page load
+  // Clear wallet connection on component mount
   useEffect(() => {
     setWalletAddress('');
+    // Clear any existing connection
+    if (window.ethereum) {
+      window.ethereum.on('accountsChanged', () => {
+        // Reset state when accounts change
+        setWalletAddress('');
+      });
+    }
+
+    // Cleanup listener on component unmount
+    return () => {
+      if (window.ethereum) {
+        window.ethereum.removeListener('accountsChanged', () => {
+          setWalletAddress('');
+        });
+      }
+    };
   }, []);
 
   const connectWallet = async () => {
@@ -18,7 +36,17 @@ const AuthSign1 = () => {
 
     setIsConnecting(true);
     try {
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      // Force MetaMask to show the account selection popup
+      await window.ethereum.request({
+        method: 'wallet_requestPermissions',
+        params: [{ eth_accounts: {} }],
+      });
+      
+      // After permission is granted, get the selected account
+      const accounts = await window.ethereum.request({ 
+        method: 'eth_requestAccounts' 
+      });
+      
       setWalletAddress(accounts[0]);
     } catch (error) {
       console.error('Error connecting to MetaMask:', error);
@@ -28,44 +56,52 @@ const AuthSign1 = () => {
     }
   };
 
-  const disconnectWallet = () => {
-    setWalletAddress(''); // Clear wallet address
-    alert('Wallet disconnected!');
+  const disconnectWallet = async () => {
+    try {
+      // Clear the wallet address state
+      setWalletAddress('');
+      
+      // Force a page reload to clear MetaMask's internal state
+      window.location.reload();
+    } catch (error) {
+      console.error('Error disconnecting wallet:', error);
+      alert('Failed to disconnect wallet. Please try again.');
+    }
   };
+
+  useEffect(() => {
+    // Create the custom cursor
+    const cursor = document.createElement("div");
+    cursor.id = "custom-cursor";
+    document.body.appendChild(cursor);
+
+    const moveCursor = (e) => {
+      cursor.style.top = `${e.clientY}px`;
+      cursor.style.left = `${e.clientX}px`;
+    };
+
+    document.addEventListener("mousemove", moveCursor);
+
+    // Cleanup function
+    return () => {
+      document.removeEventListener("mousemove", moveCursor);
+      document.body.removeChild(cursor);
+    };
+  }, []);
+
 
   return (
     <div className="min-h-screen w-full bg-black">
+      {/* Rest of your JSX remains the same */}
       <div className="fixed inset-0 bg-black" />
-      
-      <div 
-        className="fixed inset-0 z-0" 
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, transparent 39px, rgba(34, 197, 94, 0.2) 39px, rgba(34, 197, 94, 0.2) 41px, transparent 41px),
-            linear-gradient(to bottom, transparent 39px, rgba(34, 197, 94, 0.2) 39px, rgba(34, 197, 94, 0.2) 41px, transparent 41px)
-          `,
-          backgroundSize: '40px 40px'
-        }}
-      />
+    
 
       {/* Floating particles effect */}
-      <div className="fixed inset-0 z-0 opacity-30">
-        {[...Array(150)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-2 h-2 bg-green-500 rounded-full animate-float"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${5 + Math.random() * 5}s`
-            }}
-          />
-        ))}
-      </div>
+      <GeometricWeb></GeometricWeb>
 
       <div className="relative z-10 min-h-screen flex flex-col items-center justify-center p-4">
-        <div className="w-full max-w-md bg-black border border-green-900 rounded-lg p-6">
+        <div className="w-full max-w-md bg-black border border-green-900 rounded-lg p-8">
+          {/* Your existing UI components */}
           <div className="mb-8 transform hover:scale-105 transition-transform duration-300">
             <h1 className="text-5xl font-bold text-green-500 text-center animate-glow">
               MicroFi
@@ -121,8 +157,31 @@ const AuthSign1 = () => {
           animation: float 5s ease-in-out infinite;
         }
       `}</style>
+
+      
+<style jsx global>{`
+        #custom-cursor {
+          position: fixed;
+          width: 20px;
+          height: 20px;
+          background-color: rgba(34, 197, 94, 1);
+          border-radius: 50%;
+          pointer-events: none; /* Ensure it doesn't block clicks */
+          z-index: 10000;
+          transform: translate(-50%, -50%);
+          transition: transform 0.1s ease-out;
+        }
+
+        button:hover ~ #custom-cursor {
+          transform: scale(1.5); /* Makes the cursor grow over buttons */
+        }
+
+        body, a, button {
+          cursor: none;
+        }          
+        `}</style>
     </div>
   );
 };
 
-export default AuthSign1;
+export default AuthSign;

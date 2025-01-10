@@ -3,6 +3,9 @@ import React from 'react';
 import { useEffect } from 'react';
 import { DollarSign, Shield, Clock } from 'lucide-react';
 
+
+const About = () => {
+  
   useEffect(() => {
     // Create the custom cursor
     const cursor = document.createElement("div");
@@ -23,7 +26,6 @@ import { DollarSign, Shield, Clock } from 'lucide-react';
     };
   }, []);
 
-const About = () => {
   return (
     <div className="min-h-screen bg-gray-900 p-6">
       <h1 className="text-3xl font-bold text-white mb-6">About DeFi Microloans</h1>

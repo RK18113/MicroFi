@@ -359,10 +359,9 @@ const Home = () => {
       }
     ]
   ];
-  const contractAddress = '0x34AB0985306d52e6aC44597bed8078ec2f69BE30'; // Replace with your deployed contract address
+  const contractAddress = '0x34AB0985306d52e6aC44597bed8078ec2f69BE30'; 
 
   useEffect(() => {
-    // Create the custom cursor
     const cursor = document.createElement("div");
     cursor.id = "custom-cursor";
     document.body.appendChild(cursor);
@@ -374,7 +373,6 @@ const Home = () => {
 
     document.addEventListener("mousemove", moveCursor);
 
-    // Cleanup function
     return () => {
       document.removeEventListener("mousemove", moveCursor);
       document.body.removeChild(cursor);
@@ -387,7 +385,7 @@ const Home = () => {
       const accounts = await provider.send("eth_requestAccounts", []);
       setAccount(accounts[0]);
 
-      // Initialize contract
+  
       const signer = await provider.getSigner();
       const contractInstance = new ethers.Contract(contractAddress, contractABI, signer);
       setContract(contractInstance);
@@ -492,9 +490,10 @@ const Home = () => {
 
             <div className="bg-black/40 p-6 rounded-xl border border-green-400/20 group">
               <History className="text-green-400 mb-4 group-hover:animate-spin" size={32} />
-              <h3 className="text-xl font-bold mb-3">Build Credit</h3>
+              <h3 className="text-xl font-bold mb-3">Flexible Interest Rate</h3>
               <p className="text-gray-400">
-                Build your on-chain credit score through timely repayments and unlock better interest rates.
+              Flexible, market-driven interest rates that adapt to demand and reward borrower 
+              reliability with fairness and transparency
               </p>
             </div>
           </div>

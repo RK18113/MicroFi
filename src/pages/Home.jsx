@@ -500,6 +500,85 @@ const Home = () => {
         </div>
       </section>
 
+      
+      {/* Benefits Section */}
+      <section className="relative z-10 bg-black py-20 lg:p-10 animate-slide-up">
+        <div className="container mx-auto px-6">
+          <h2 className="text-3xl font-bold mb-12 text-center">Benefits</h2>
+          <div className="grid md:grid-cols-2 gap-14">
+
+            <div className="flex items-start gap-4 group">
+              <div className="bg-green-400/20 p-2 rounded-lg">
+                <Star className="text-green-400 group-hover:animate-spin" size={24} />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold mb-2">No Middlemen</h3>
+                <p className="text-gray-400">
+                  Peer-to-peer lending removes traditional intermediaries, reducing unnecessary 
+                  fees and fostering trust through smart contract enforcement.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4 group">
+              <div className="bg-green-400/20 p-2 rounded-lg">
+                <Star className="text-green-400 group-hover:animate-spin" size={24} />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold mb-2">Global Access</h3>
+                <p className="text-gray-400">
+                Anyone with crypto can participate, transcending borders to unlock financial 
+                opportunities for underserved regions and users without traditional credit history.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4 group">
+              <div className="bg-green-400/20 p-2 rounded-lg">
+                <Star className="text-green-400 group-hover:animate-spin" size={24} />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold mb-2">Immutable & Transparent Transactions</h3>
+                <p className="text-gray-400">
+                Every loan is recorded on the blockchain, ensuring transparency and accountability 
+                for all parties involved.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4 group">
+              <div className="bg-green-400/20 p-2 rounded-lg">
+                <Star className="text-green-400 group-hover:animate-spin" size={24} />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold mb-2">Improved Loan Terms</h3>
+                <p className="text-gray-400">
+                Successful repayments improve your reputation score, allowing you to enjoy reduced 
+                interest rates and higher loan limits over time.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="relative z-10 py-20 bg-black bg-green-400/10 animate-slide-up">
+        <div className="container mx-auto px-6 text-center">
+          <h2 className="text-4xl font-bold mb-6">Ready to Get Started?</h2>
+          <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
+            Join the future of decentralized finance. Start borrowing or lending 
+            in minutes with our easy-to-use platform.
+          </p>
+          <Link to="./authsign">
+            <button className="bg-green-400 text-black px-8 py-4 rounded-lg flex items-center gap-2 mx-auto hover:bg-green-500">
+              Launch App <ChevronRight size={20} />
+            </button>
+          </Link>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="relative z-10 border-t bg-black border-green-400/20 py-8 animate-slide-up">
         <div className="container mx-auto px-6 flex justify-between items-center">

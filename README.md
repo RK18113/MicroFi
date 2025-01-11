@@ -116,9 +116,4 @@ We welcome contributions from the community! To get started:
 
 ---
 
-## 📄 License
-This project is licensed under the MIT License. See the `LICENSE` file for details.
-
----
-
 ## 🚀 Let's Build the Future of Decentralized Lending Together!

@@ -5,7 +5,7 @@ const Borrowing = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [walletLoading, setWalletLoading] = useState(false);
   const [account, setAccount] = useState('');
-  
+
   const [loanAmount, setLoanAmount] = useState('');
   const [collateralAmount, setCollateralAmount] = useState('');
   const [duration, setDuration] = useState('30');
@@ -29,13 +29,11 @@ const Borrowing = () => {
         return;
       }
 
-      const accounts = await window.ethereum.request({ 
-        method: 'eth_requestAccounts' 
+      const accounts = await window.ethereum.request({
+        method: 'eth_requestAccounts'
       });
-      
-      if (accounts.length === 0) {
-        throw new Error('No accounts found');
-      }
+
+      if (accounts.length === 0) throw new Error('No accounts found');
 
       setIsConnected(true);
       setAccount(accounts[0]);
@@ -76,7 +74,7 @@ const Borrowing = () => {
 
       setLoanRequests(prev => [newLoan, ...prev]);
       setStatus("Loan requested successfully!");
-      
+
       setLoanAmount('');
       setCollateralAmount('');
       setDuration('30');
@@ -93,12 +91,16 @@ const Borrowing = () => {
       <h1 className="text-3xl font-bold text-white mb-6">Borrowing</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="bg-gray-800 border border-purple-500">
+        
+        {/* Loan Request Card */}
+        <Card className="bg-gray-800 border border-green-500">
           <CardHeader>
             <CardTitle className="text-white">Request a Loan</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
+              
+              {/* Loan Amount */}
               <div>
                 <label className="block text-white mb-2">Loan Amount (ETH)</label>
                 <input
@@ -112,6 +114,7 @@ const Borrowing = () => {
                 />
               </div>
 
+              {/* Collateral */}
               <div>
                 <label className="block text-white mb-2">Collateral Amount (Any Equivalent)</label>
                 <input
@@ -125,6 +128,7 @@ const Borrowing = () => {
                 />
               </div>
 
+              {/* Duration */}
               <div>
                 <label className="block text-white mb-2">Loan Duration (Days)</label>
                 <input
@@ -142,6 +146,7 @@ const Borrowing = () => {
                 <p className="text-gray-400 text-sm mt-1">Minimum duration: 2 days</p>
               </div>
 
+              {/* Interest Rate */}
               <div>
                 <label className="block text-white mb-2">Interest Rate (% APR)</label>
                 <input
@@ -159,14 +164,17 @@ const Borrowing = () => {
                 />
                 <p className="text-gray-400 text-sm mt-1">Minimum interest rate: 2% APR</p>
               </div>
+
+              {/* NFT Details */}
               <div>
                 <label className="block text-white mb-2">NFT Address</label>
                 <input
-                  type="number"
+                  type="text"
                   className="w-full p-2 rounded bg-gray-700 text-white"
                   disabled={!isConnected}
                 />
               </div>
+
               <div>
                 <label className="block text-white mb-2">Token ID</label>
                 <input
@@ -176,8 +184,9 @@ const Borrowing = () => {
                 />
               </div>
 
+              {/* Total Repayment Info */}
               {calculateTotalRepayment() && (
-                <div className="p-3 bg-gray-700 rounded">
+                <div className="p-3 bg-gray-700 rounded border border-green-500">
                   <p className="text-white">
                     Total Repayment Amount: {calculateTotalRepayment()} ETH
                   </p>
@@ -187,11 +196,12 @@ const Borrowing = () => {
                 </div>
               )}
 
+              {/* Actions */}
               {isConnected ? (
                 <div className="space-y-4">
                   <p className="text-white">Connected Account: {account}</p>
                   <button
-                    className="w-full bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded disabled:opacity-50"
+                    className="w-full bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded disabled:opacity-50"
                     onClick={applyForLoan}
                     disabled={loading || !loanAmount || !collateralAmount || !duration || !interestRate}
                   >
@@ -201,15 +211,16 @@ const Borrowing = () => {
               ) : (
                 <button
                   onClick={connectWallet}
-                  className="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
+                  className="w-full bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded disabled:opacity-50"
                   disabled={walletLoading}
                 >
                   {walletLoading ? "Connecting..." : "Connect MetaMask"}
                 </button>
               )}
 
+              {/* Status Message */}
               {status && (
-                <p className="text-white p-3 rounded bg-gray-700">
+                <p className="text-white p-3 rounded bg-gray-700 border border-green-500">
                   {status}
                 </p>
               )}
@@ -217,7 +228,8 @@ const Borrowing = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-gray-800 border border-purple-500">
+        {/* Loan Requests Card */}
+        <Card className="bg-gray-800 border border-green-500">
           <CardHeader>
             <CardTitle className="text-white">My Loan Requests</CardTitle>
           </CardHeader>
@@ -227,7 +239,7 @@ const Borrowing = () => {
             ) : (
               <div className="space-y-4">
                 {loanRequests.map((loan) => (
-                  <div key={loan.id} className="p-4 bg-gray-700 rounded">
+                  <div key={loan.id} className="p-4 bg-gray-700 rounded border border-green-500">
                     <div className="grid grid-cols-2 gap-2 text-sm">
                       <p className="text-gray-400">Amount:</p>
                       <p className="text-white">{loan.amount} ETH</p>

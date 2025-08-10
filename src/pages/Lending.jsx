@@ -87,9 +87,7 @@ const LendingDashboard = () => {
         method: 'eth_requestAccounts' 
       });
       
-      if (accounts.length === 0) {
-        throw new Error('No accounts found');
-      }
+      if (accounts.length === 0) throw new Error('No accounts found');
 
       setIsConnected(true);
       setAccount(accounts[0]);
@@ -148,38 +146,41 @@ const LendingDashboard = () => {
   return (
     <div className="min-h-screen bg-gray-900 p-6">
       <div className="max-w-6xl mx-auto">
+        {/* Header */}
         <header className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold text-white">Lending Dashboard</h1>
           {!isConnected ? (
             <button
               onClick={connectWallet}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
+              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded disabled:opacity-50"
               disabled={walletLoading}
             >
               {walletLoading ? "Connecting..." : "Connect MetaMask"}
             </button>
           ) : (
-            <div className="text-white bg-gray-800 px-4 py-2 rounded">
+            <div className="text-white bg-gray-800 px-4 py-2 rounded border border-green-500">
               Connected: {account.slice(0, 6)}...{account.slice(-4)}
             </div>
           )}
         </header>
 
+        {/* Status Alert */}
         {status && (
-          <Alert className="mb-6 bg-gray-800 text-white border border-purple-500">
+          <Alert className="mb-6 bg-gray-800 text-white border border-green-500">
             {status}
           </Alert>
         )}
 
+        {/* Requests Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {borrowRequests.map((request) => (
             <Card 
               key={request.id} 
               className={`bg-gray-800 border ${
                 selectedRequest?.id === request.id 
-                  ? 'border-purple-500' 
+                  ? 'border-green-500' 
                   : 'border-gray-700'
-              } cursor-pointer hover:border-purple-400 transition-colors`}
+              } cursor-pointer hover:border-green-400 transition-colors`}
               onClick={() => setSelectedRequest(request)}
             >
               <CardHeader>
@@ -207,7 +208,7 @@ const LendingDashboard = () => {
                     <span>Interest: {request.interestRate}% APR</span>
                   </div>
                   <div className="mt-4 pt-4 border-t border-gray-700">
-                    <p className="text-purple-400">
+                    <p className="text-green-400">
                       Total Repayment: {calculateTotalRepayment(
                         request.loanAmount,
                         request.interestRate,
@@ -221,9 +222,10 @@ const LendingDashboard = () => {
           ))}
         </div>
 
+        {/* Loan Approval Modal */}
         {selectedRequest && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-            <Card className="bg-gray-800 border border-purple-500 w-full max-w-md">
+            <Card className="bg-gray-800 border border-green-500 w-full max-w-md">
               <CardHeader>
                 <CardTitle className="text-white">Approve Loan Request</CardTitle>
               </CardHeader>
@@ -240,7 +242,7 @@ const LendingDashboard = () => {
                   )} ETH</p>
                   <div className="flex gap-4 mt-6">
                     <button
-                      className="flex-1 bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded disabled:opacity-50"
+                      className="flex-1 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded disabled:opacity-50"
                       onClick={() => approveLoan(selectedRequest)}
                       disabled={processing || !isConnected}
                     >
